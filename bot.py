@@ -35,20 +35,20 @@ def admin_panel(com):
             os.system('cls')
             print("error")
 
-taps = {}
-refers1 = {}
-refers2 = {}
-referals = []
-command_panel = ""
+taps = {} # id : taps
+refers1 = {} # refer : [refer1, refer2]
+refers2 = {} # referal : refer
+referals = [] # all refers
+command_panel = "" # command from admin panel
 
 buster_tap = {} # id : lvl of buster
-maining_buster_tap = {0: 0, 1: 0.2, 2: 0.5, 3: 1, 4: 1.2, 5: 1.5, 6: 2, 7: 2.2, 8: 2.5, 9: 3, 10: 9.2}
+maining_buster_tap = {0: 0, 1: 0.2, 2: 0.5, 3: 1, 4: 1.2, 5: 1.5, 6: 2, 7: 2.2, 8: 2.5, 9: 3, 10: 9.2} # how user will get
 
 passive = {} # id : lvl of passive
 
 buster_passive = {} # id : lvl of buster
 
-buying_item = ""
+buying_item = "" # name of item for buying
 
 panel = Tk()
 panel.title("Telebot Admin Panel")
@@ -59,7 +59,7 @@ p_btn.place(x = 200, y = 200, width = 100, height = 50)
 entry_obj = Entry(panel, width = 70)
 entry_obj.place(x = 25, y = 100)
 
-token = "токен"
+token = "token"
 bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands = ["hello"])
