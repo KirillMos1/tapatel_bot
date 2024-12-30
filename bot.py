@@ -63,14 +63,14 @@ token = "токен"
 bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands = ["hello"])
-def sendMessage(mess):
+def hello_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Назад")
     markup.add(btn1)
     bot.reply_to(mess, "Привет", reply_markup = markup)
 
 @bot.message_handler(commands = ["start"])
-def sendMessage1(mess):
+def start_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Режим тапинга")
     btn2 = types.KeyboardButton("Поздороваться")
@@ -79,7 +79,7 @@ def sendMessage1(mess):
     #     bot.send_audio(mess.chat.id, audio = open("photo_2024-12-08_12-56-08.jpg", "rb"))
 
 @bot.message_handler(commands = ["taping"])
-def sendMessage2(mess):
+def taping_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Тапнуть")
     btn2 = types.KeyboardButton("Баланс")
@@ -97,14 +97,14 @@ def sendMessage2(mess):
         buster_tap[mess.chat.id] = 0
 
 @bot.message_handler(commands = ["bal"])
-def sendMessage3(mess):
+def balance_dialoge(mess):
     if mess.chat.id not in taps:
         taps[mess.chat.id] = 0
         print(mess.chat.id)
     bot.reply_to(mess, f"Твой баланс - {int(taps[mess.chat.id])}")
 
 @bot.message_handler(commands = ["tap"])
-def sendMessage4(mess):
+def tap_dialoge(mess):
     global taps
     bot.send_message(mess.chat.id, ".")
     if mess.chat.id not in taps:
@@ -116,7 +116,7 @@ def sendMessage4(mess):
     taps[mess.chat.id] = taps[mess.chat.id] + 1
 
 @bot.message_handler(commands = ["refer"])
-def sendMessage5(mess):
+def refer_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Режим тапинга")
     markup.add(btn1)
@@ -124,7 +124,7 @@ def sendMessage5(mess):
     refers1[mess.chat.id] = []
 
 @bot.message_handler(commands = ["referal"])
-def sendMessage6(mess):
+def referal_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Режим тапинга")
     markup.add(btn1)
@@ -132,7 +132,7 @@ def sendMessage6(mess):
     bot.register_next_step_handler(mess, referalsss)
 
 @bot.message_handler(commands = ["top"])
-def sendMessage7(mess):
+def top_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton("Режим тапинга")
     markup.add(btn1)
@@ -148,7 +148,7 @@ def sendMessage7(mess):
 
 
 @bot.message_handler(commands = ["buster_tap"])
-def sendMessage8(mess):
+def buster_tap_dialoge(mess):
     global buying_item
     if mess.chat.id not in buster_tap:
         buster_tap[mess.chat.id] = 0
@@ -166,7 +166,7 @@ def sendMessage8(mess):
         bot.reply_to(mess, "У вас максимальный уровень!", reply_markup = markup)
 
 @bot.message_handler(commands = ["passive_busters"])
-def sendMessage9(mess):
+def passive_busters_dialoge(mess):
     markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
     btn1 = types.KeyboardButton("Пассив")
     btn2 = types.KeyboardButton("Бустер тапа")
@@ -175,7 +175,7 @@ def sendMessage9(mess):
     bot.reply_to(mess, "Что вы хотите приобрести?", reply_markup = markup)
 
 @bot.message_handler(comands = ["passive"])
-def sendMessage10(mess):
+def passive_dialoge(mess):
     global buying_item
     if mess.chat.id not in passive:
         passive[mess.chat.id] = 0
@@ -193,7 +193,7 @@ def sendMessage10(mess):
         bot.reply_to(mess, "У вас максимальный уровень!", reply_markup = markup)
 
 @bot.message_handler(comands = ["buster_passive"])
-def sendMessage11(mess):
+def buster_passive_dialoge(mess):
     global buying_item
     if mess.chat.id not in buster_passive:
         buster_passive[mess.chat.id] = 0
@@ -239,7 +239,7 @@ def buying(mess, type_of_buy):
         else:
             bot.reply_to(mess, f"У вас недостаточно тапов! Надо еще {(buster_passive[mess.chat.id] + 1) * 100 - taps[mess.chat.id]} тапа(ов)", reply_markup = markup)
 
-def referalsss(msg):
+def adding_referal(msg):
     refers1[int(msg.text)].append(msg.chat.id)
     refers2[msg.chat.id] = int(msg.text)
     referals.append(msg.chat.id)
@@ -250,37 +250,33 @@ def buttons(mess):
     global buying_item
     
     if mess.text == "Режим тапинга" or mess.text == "Нет":
-        sendMessage2(mess)
+        taping_dialoge(mess)
     elif mess.text == "Поздороваться":
         sendMessage(mess)
     elif mess.text == "Тапнуть":
-        sendMessage4(mess)
+        tap_dialoge(mess)
     elif mess.text == "Баланс":
-        sendMessage3(mess)
+        balance_dialoge(mess)
     elif mess.text == "Назад":
-        sendMessage1(mess)
+        start_dialoge(mess)
     elif mess.text == "Стать рефером":
-        sendMessage5(mess)
+        refer_dialoge(mess)
     elif mess.text == "Стать рефералом":
-        sendMessage6(mess)
+        referal_dialoge(mess)
     elif mess.text == "Топ по тапам":
-        sendMessage7(mess)
+        top_dialoge(mess)
     elif mess.text == "Да":
         buying(mess, buying_item)
     elif mess.text == "Пассив и бустеры":
-        sendMessage9(mess)
+        passive_busters_dialoge(mess)
     elif mess.text == "Бустер тапа":
-        sendMessage8(mess)
+        buster_tap_dialoge(mess)
     elif mess.text == "Пассив":
-        sendMessage10(mess)
+        passive_dialoge(mess)
     elif mess.text == "Бустер пассива":
-        sendMessage11(mess)
+        start_dialoge1(mess)
     else:
         bot.reply_to(mess, "Скажи прогерам @tapatel_help_bot что на такое я не запрограммирован")
-
-@bot.message_handler(content_types=['audio'])
-def buttons(mess):
-    bot.send_message(mess.chat.id, "Я к великому сожалению глухой. Говорить мне бессмысленно")
 
 potok = Thread(target = bot.infinity_polling)
 potok.start()
